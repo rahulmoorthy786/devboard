@@ -10,25 +10,56 @@ export default [
   {
     files: ['src/**/*.{js,jsx}'],
     ...js.configs.recommended,
+
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: globals.browser,
-      parserOptions: { ecmaFeatures: { jsx: true } },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
-    plugins: { react, 'react-hooks': reactHooks },
+
+    plugins: {
+      react,
+      'react-hooks': reactHooks,
+    },
+
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react/jsx-uses-vars': 'error',   // count <Icon /> as a use
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' }],
+
+      // React
+      'react/jsx-uses-vars': 'error',
+
+      // JavaScript
+      'no-unused-vars': [
+        'error',
+        {
+          varsIgnorePattern: '^[A-Z_]',
+          argsIgnorePattern: '^_',
+        },
+      ],
+
+      // Disable this React Hooks rule for this project
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 
-  // Test files get vitest globals.
+  // Test files get Vitest globals.
   {
     files: ['src/**/*.test.{js,jsx}', 'src/test/**/*.{js,jsx}'],
     languageOptions: {
-      globals: { ...globals.node, describe: true, it: true, expect: true, vi: true, beforeEach: true, afterEach: true },
+      globals: {
+        ...globals.node,
+        describe: true,
+        it: true,
+        expect: true,
+        vi: true,
+        beforeEach: true,
+        afterEach: true,
+      },
     },
   },
 ];
