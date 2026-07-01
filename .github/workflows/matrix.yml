@@ -1,6 +1,6 @@
 # Goal: To install multiple versions of go and do linting for multiple version.
 
-name: Go Lint
+name: Go Linter
 
 on:
     workflow_dispatch:
@@ -30,6 +30,6 @@ jobs:
 
             - name: Run Go Vet
               run: go vet
-              working-directory: backend     
+              working-directory: backend
 
             
