@@ -1,4 +1,4 @@
-# Goal: To install multiple versions of go and do linting for multiple version.
+# Goal: To install multiple versions of go and do linting for multiple versions.
 
 name: Go Linter
 
