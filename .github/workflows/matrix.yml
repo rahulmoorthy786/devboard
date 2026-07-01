@@ -4,7 +4,7 @@ name: Go Linter
 
 on:
     schedule:
-        - cron: '10 5 * * *' # Runs every day at midnight
+        - cron: '25 5 * * *' # Runs every day at midnight
   
 jobs:
     code-format:
