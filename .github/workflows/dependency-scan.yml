@@ -24,7 +24,7 @@ jobs:
             
           - name: Run Govulncheck
             continue-on-error: true
-            run: govulncheck ./...
+            run: govulncheck ./...  > govulncheck-report.txt
             working-directory: backend
 
           - name: Setup node
