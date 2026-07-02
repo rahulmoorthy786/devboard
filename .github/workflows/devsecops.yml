@@ -10,3 +10,7 @@ jobs:
     # code stage (with shift-left approach))
     code-quality:
         uses: ./.github/workflows/code-quality.yml       
+
+    # Security Scans
+    scret-scanning:
+        uses: ./.github/workflows/secret-scanning.yml    
