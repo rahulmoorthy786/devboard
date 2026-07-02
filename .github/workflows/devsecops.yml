@@ -17,9 +17,14 @@ jobs:
 
     # Dependency Checks
     dependency-checks:
-        uses: ./.github/workflows/dependency-scan.yml    
+        uses: ./.github/workflows/dependency-scan.yml  
 
     # Docker Checks        
     docker-checks:
         uses: ./.github/workflows/docker-scans.yml
+        secrets: inherit
+        
+    # Sonar Scan
+    sonar_qube_scan:
+        uses: ./.github/workflows/sonar-scan.yml
         secrets: inherit
