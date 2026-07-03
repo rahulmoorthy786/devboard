@@ -1,0 +1,42 @@
+# Goal - Push Image to Dockerhub and deploy the application.
+
+name: Docker Push
+
+on:
+  workflow_call:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    strategy:
+            fail-fast: false
+            matrix:
+                folder: [frontend, backend]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7        
+       
+      - name: Docker Setup [Login]
+        uses: docker/login-action@v4
+        with: 
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Docker build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: ./${{ matrix.folder }}
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest   
+      
+      - name: Docker build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: ./${{ matrix.folder }}
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest   
+    
+
+  
+
+
