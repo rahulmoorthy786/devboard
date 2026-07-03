@@ -29,12 +29,7 @@ jobs:
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest   
       
-      - name: Docker build and push
-        uses: docker/build-push-action@v7
-        with:
-          context: ./${{ matrix.folder }}
-          push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest   
+  
     
 
   
