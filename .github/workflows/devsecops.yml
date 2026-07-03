@@ -32,13 +32,13 @@ jobs:
     code-test:
         uses: ./.github/workflows/code-test.yml
         
-    docker-build-and-push:
+    docker-push:
          needs: [code-quality, secret-scanning, dependency-checks, docker-checks, sonar_qube_scan, code-test]
          uses: ./.github/workflows/docker-push.yml
          secrets: inherit
 
 
     deploy:
-        needs: [docker-build-and-push]
+        needs: [docker-push]
         uses: ./.github/workflows/deploy.yml
         secrets: inherit      
