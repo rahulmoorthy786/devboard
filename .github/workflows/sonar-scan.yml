@@ -1,4 +1,4 @@
-# Goal - To check whether the application code coverage doesnt have security vulnerabilities. 
+# Goal - To check whether the application code coverage doesnt have security vulnerabilities and threats. 
 
 name: Sonar Scan
 
