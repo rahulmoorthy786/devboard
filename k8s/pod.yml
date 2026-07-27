@@ -5,7 +5,7 @@ metadata:
   namespace: devboard
 spec:
   containers:
-  - name: devboard-frontend
+  - name: devboard-fronent
     image: trainwithdocker/devboard-frontend:latest
-    ports: 
+    ports:
     - containerPort: 4173
