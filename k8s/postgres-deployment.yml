@@ -31,12 +31,15 @@ spec:
                 secretKeyRef:
                   name: devboard-secrets
                   key: POSTGRES_PASSWORD
-
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
                   name: devboard-secrets
                   key: POSTGRES_DB
+          volumeMounts:
+            - name: init
+              mountPath: /docker-entrypoint-initdb.d
+              readOnly: true
 
       volumes:
         - name: init
