@@ -1,12 +1,13 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgres-deployment
+  name: postgres-statefulset
   namespace: devboard
   labels:
     app: devboard-postgres
 spec:
-  replicas: 1
+  serviceName: postgres
+  replicas: 3
   selector:
     matchLabels:
       app: devboard-postgres
@@ -36,27 +37,31 @@ spec:
                 secretKeyRef:
                   name: devboard-secrets
                   key: POSTGRES_DB
-
           readinessProbe:
             exec:
               command:
-                ["sh", "-c", "pg_isready -U $(POSTGRES_USER) -d $(POSTGRES_DB)"]
+                - sh
+                - -c
+                - pg_isready -U $(POSTGRES_USER) -d $(POSTGRES_DB)
             initialDelaySeconds: 5
             periodSeconds: 5
-
           volumeMounts:
             - name: init
               mountPath: /docker-entrypoint-initdb.d
               readOnly: true
-
             - name: data
               mountPath: /var/lib/postgresql/data
-
       volumes:
         - name: init
           configMap:
             name: postgres-init
-
-        - name: data
-          persistentVolumeClaim:
-            claimName: postgres-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        storageClassName: standard
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
