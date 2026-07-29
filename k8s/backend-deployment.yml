@@ -39,6 +39,9 @@ spec:
                   name: devboard-secrets
                   key: POSTGRES_DB
 
+            - name: POSTGRES_HOST
+              value: devboard-postgres-rw
+
             - name: POSTGRES_URL
               value: postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable
 

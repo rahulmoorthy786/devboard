@@ -1,0 +1,19 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: devboard-postgres
+  namespace: devboard
+
+spec:
+  instances: 3
+
+  bootstrap:
+    initdb:
+      database: devboard
+      owner: devboard
+      secret:
+        name: devboard-postgres-app
+
+  storage:
+    storageClass: standard
+    size: 1Gi
