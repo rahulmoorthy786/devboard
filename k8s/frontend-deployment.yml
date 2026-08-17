@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: devboard-frontend
-        image: trainwithdocker/devboard-frontend:sha-4945e5b
+        image: trainwithdocker/devboard-frontend:sha-56ee136
         ports:
         - containerPort: 4173
         livenessProbe:

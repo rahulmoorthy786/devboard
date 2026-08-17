@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: devboard-ai-service
-          image: trainwithdocker/devboard-ai-service:sha-4945e5b
+          image: trainwithdocker/devboard-ai-service:sha-56ee136
           ports:
             - containerPort: 3005
           env:
