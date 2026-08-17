@@ -13,7 +13,7 @@ breakdown). Section 15 tears it down.
 terraform/bootstrap  ─▶  state bucket
 terraform/           ─▶  VPC · EKS · gp3 · Pod Identity · Secrets Manager · ArgoCD
 scripts/deploy.sh    ─▶  Envoy Gateway · platform app-of-apps · the app
-your browser         ─▶  https://devboard.trainwithshubham.com
+your browser         ─▶  https://devboard.opswithrahul.com
 ```
 
 ---
@@ -376,7 +376,7 @@ echo "$ADDR"
 
 ### 12.2 Create the CNAME (manual, at GoDaddy)
 
-In the DNS panel for `trainwithshubham.com`:
+In the DNS panel for `opswithrahul.com`:
 
 | Type | Name | Value | TTL |
 | --- | --- | --- | --- |
@@ -388,8 +388,8 @@ rotate without warning.
 **You know it worked when — and do not continue until it does:**
 
 ```bash
-dig +short @8.8.8.8 devboard.trainwithshubham.com
-curl -s -o /dev/null -w '%{http_code}\n' http://devboard.trainwithshubham.com/   # 200
+dig +short @8.8.8.8 devboard.opswithrahul.com
+curl -s -o /dev/null -w '%{http_code}\n' http://devboard.opswithrahul.com/   # 200
 ```
 
 > ⚠️ A `403` here means the frontend image predates the `preview.allowedHosts`
@@ -445,7 +445,7 @@ kubectl -n devboard get certificate,certificaterequest,order,challenge
 kubectl -n devboard get httproute -l acme.cert-manager.io/http01-solver=true
 
 TOKEN=$(kubectl -n devboard get challenge -o jsonpath='{.items[0].spec.token}')
-curl -s "http://devboard.trainwithshubham.com/.well-known/acme-challenge/$TOKEN"
+curl -s "http://devboard.opswithrahul.com/.well-known/acme-challenge/$TOKEN"
 # the key authorization string — not HTML, not a 301
 ```
 
@@ -482,8 +482,8 @@ kubectl -n devboard get gateway devboard-gateway \
 **You know it worked when:**
 
 ```bash
-curl -sI https://devboard.trainwithshubham.com/ | head -1
-curl -s https://devboard.trainwithshubham.com/api/projects | jq '.[0]'
+curl -sI https://devboard.opswithrahul.com/ | head -1
+curl -s https://devboard.opswithrahul.com/api/projects | jq '.[0]'
 ```
 
 ### 12.7 Redirect HTTP to HTTPS
@@ -495,8 +495,8 @@ git add k8s/httproute-redirect.yml && git commit -m "redirect http to https" && 
 **You know it worked when the domain redirects but the raw URL still does not:**
 
 ```bash
-curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}\n' http://devboard.trainwithshubham.com/
-# 301 -> https://devboard.trainwithshubham.com/
+curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}\n' http://devboard.opswithrahul.com/
+# 301 -> https://devboard.opswithrahul.com/
 
 curl -s -o /dev/null -w '%{http_code}\n' "http://$ADDR/"     # 200, not 301
 ```
@@ -746,7 +746,7 @@ missing the `kubernetes.io/role/elb` tag.
 kubectl -n devboard describe certificate devboard-tls
 kubectl -n devboard describe challenge
 kubectl -n cert-manager logs deploy/cert-manager --tail=100 | grep -i devboard
-dig +short @8.8.8.8 devboard.trainwithshubham.com
+dig +short @8.8.8.8 devboard.opswithrahul.com
 ```
 
 Ranked causes:
