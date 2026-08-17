@@ -24,7 +24,7 @@ postgres:
       memory: 256Mi
 backend:
   image:
-    repository: trainwithshubham/devboard-backend
+    repository: trainwithdocker/devboard-backend
     tag: sha-4945e5b
     pullPolicy: IfNotPresent
   replicas: 1
@@ -39,7 +39,7 @@ backend:
       memory: 128Mi
 frontend:
   image:
-    repository: trainwithshubham/devboard-frontend
+    repository: trainwithdocker/devboard-frontend
     tag: sha-4945e5b
     pullPolicy: IfNotPresent
   replicas: 1
@@ -60,7 +60,7 @@ frontend:
 ai:
   enabled: true
   image:
-    repository: trainwithshubham/devboard-ai-service
+    repository: trainwithdocker/devboard-ai-service
     tag: sha-4945e5b
     pullPolicy: IfNotPresent
   replicas: 1
