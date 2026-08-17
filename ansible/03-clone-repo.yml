@@ -24,7 +24,7 @@
     - name: Warn if the repo is still the upstream one
       ansible.builtin.debug:
         msg: >-
-          repo_url still points at LondheShubham153/devboard. Change it to your
+          repo_url still points at the upstream DevBoard repository. Change it to your fork in group_vars/devboard.yml. Change it to your
           fork in group_vars/devboard.yml, or ArgoCD will sync from a repo you
           cannot push to.
       when: "'LondheShubham153' in repo_url"

@@ -712,7 +712,7 @@ kubectl -n devboard describe pod <pod> | grep -A5 Events
 ```
 
 Docker Hub anonymous rate limit, or a `sha-<short>` tag from a CI run whose build
-never pushed. The upstream `trainwithshubham/*` images are public and pull fine.
+never pushed. The DevBoard images are published under the `trainwithdocker/*` Docker Hub namespace.
 
 ### 16.4 ArgoCD `ComparisonError` / app stuck `Unknown`
 
