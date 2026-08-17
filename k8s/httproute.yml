@@ -6,6 +6,8 @@ metadata:
 spec:
   parentRefs:
     - name: devboard-gateway
+  hostnames:
+    - devboard.opswithrahul.com
   rules:
     # Exact, not PathPrefix: a prefix once exposed /api/ai/metrics. The vite proxy was a second door.
     - matches:
