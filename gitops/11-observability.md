@@ -110,7 +110,7 @@ Open any of `gitops/argocd/platform/observability-*.yaml` and you'll see
         valueFiles:
           - $values/gitops/observability/loki-values.yaml
 
-    - repoURL: https://github.com/LondheShubham153/devboard.git
+    - repoURL: https://github.com/rahulmoorthy786/devboard.git
       targetRevision: mega-project
       ref: values
 ```
