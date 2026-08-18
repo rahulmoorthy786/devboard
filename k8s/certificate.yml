@@ -12,7 +12,7 @@ spec:
     - devboard.opswithrahul.com
     - argocd.opswithrahul.com
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-production
     kind: ClusterIssuer
     group: cert-manager.io
   privateKey:
