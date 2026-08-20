@@ -6,7 +6,6 @@ metadata:
 spec:
   gatewayClassName: envoy
   listeners:
-    # Port 80 carries the ACME challenge and HTTP redirects.
     - name: http
       protocol: HTTP
       port: 80
@@ -14,7 +13,6 @@ spec:
         namespaces:
           from: Same
 
-    # DevBoard HTTPS
     - name: https
       protocol: HTTPS
       port: 443
@@ -27,25 +25,4 @@ spec:
             name: devboard-tls
       allowedRoutes:
         namespaces:
-          from: Selector
-          selector:
-            matchLabels:
-              gateway-access: "true"
-
-    # ArgoCD HTTPS
-    - name: argocd-https
-      protocol: HTTPS
-      port: 443
-      hostname: argocd.opswithrahul.com
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            group: ""
-            name: devboard-tls
-      allowedRoutes:
-        namespaces:
-          from: Selector
-          selector:
-            matchLabels:
-              gateway-access: "true"
+          from: Same

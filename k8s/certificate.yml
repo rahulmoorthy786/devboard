@@ -10,7 +10,6 @@ spec:
   secretName: devboard-tls
   dnsNames:
     - devboard.opswithrahul.com
-    - argocd.opswithrahul.com
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
