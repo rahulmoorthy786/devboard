@@ -26,3 +26,20 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
+
+    - name: argocd-https
+      protocol: HTTPS
+      port: 443
+      hostname: argocd.opswithrahul.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: devboard-tls
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              gateway-access: "true"
