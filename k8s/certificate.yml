@@ -11,6 +11,7 @@ spec:
   dnsNames:
     - devboard.opswithrahul.com
     - argocd.opswithrahul.com
+    - grafana.opswithrahul.co
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
