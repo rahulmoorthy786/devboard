@@ -1,11 +1,17 @@
 {
   "title": "DevBoard AI — RED",
   "uid": "devboard-ai-red",
-  "tags": ["devboard", "ai"],
+  "tags": [
+    "devboard",
+    "ai"
+  ],
   "timezone": "browser",
   "schemaVersion": 39,
   "refresh": "30s",
-  "time": { "from": "now-1h", "to": "now" },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
   "templating": {
     "list": [
       {
@@ -13,7 +19,10 @@
         "label": "Stack",
         "type": "custom",
         "query": "devboard,devboard-helm",
-        "current": { "text": "devboard", "value": "devboard" },
+        "current": {
+          "text": "devboard",
+          "value": "devboard"
+        },
         "options": []
       }
     ]
@@ -21,16 +30,34 @@
   "panels": [
     {
       "type": "row",
-      "title": "Rate, Errors, Duration — derived from spans, not from app code",
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
+      "title": "Rate, Errors, Duration — application and Envoy telemetry",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "type": "timeseries",
       "title": "Request rate by endpoint",
-      "description": "From the spanmetrics connector in the Collector. No metrics code in ai-service produced this.",
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
-      "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
+      "description": "Request rate derived from OpenTelemetry span metrics for the AI service.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
       "targets": [
         {
           "expr": "sum by (span_name) (rate(traces_span_metrics_calls_total{service_name=\"ai-service\"}[5m]))",
@@ -42,9 +69,17 @@
     {
       "type": "timeseries",
       "title": "Error ratio",
-      "description": "Spans marked ERROR over all spans. An upstream model failure now lands here because model.py raises instead of yielding the error as text.",
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
+      "description": "Server-side 5xx responses divided by all DevBoard requests, derived from Envoy Gateway metrics.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "percentunit",
@@ -52,8 +87,14 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "red", "value": 0.1 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.1
+              }
             ]
           }
         },
@@ -61,7 +102,7 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(traces_span_metrics_calls_total{service_name=\"ai-service\",status_code=\"STATUS_CODE_ERROR\"}[5m])) / clamp_min(sum(rate(traces_span_metrics_calls_total{service_name=\"ai-service\"}[5m])), 0.0001)",
+          "expr": "((sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~\"httproute/devboard/.*\",envoy_response_code_class=\"5\"}[5m])) or vector(0)) / clamp_min(sum(rate(envoy_cluster_upstream_rq_xx{envoy_cluster_name=~\"httproute/devboard/.*\"}[5m])), 0.0001))",
           "legendFormat": "error ratio",
           "refId": "A"
         }
@@ -70,22 +111,36 @@
     {
       "type": "timeseries",
       "title": "Latency p50 / p95 / p99",
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
-      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
+      "description": "DevBoard upstream request latency derived from Envoy Gateway histogram metrics.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms"
+        },
+        "overrides": []
+      },
       "targets": [
         {
-          "expr": "histogram_quantile(0.50, sum by (le) (rate(traces_span_metrics_duration_seconds_bucket{service_name=\"ai-service\"}[5m])))",
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(envoy_cluster_upstream_rq_time_bucket{envoy_cluster_name=~\"httproute/devboard/.*\"}[5m])))",
           "legendFormat": "p50",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(traces_span_metrics_duration_seconds_bucket{service_name=\"ai-service\"}[5m])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(envoy_cluster_upstream_rq_time_bucket{envoy_cluster_name=~\"httproute/devboard/.*\"}[5m])))",
           "legendFormat": "p95",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.99, sum by (le) (rate(traces_span_metrics_duration_seconds_bucket{service_name=\"ai-service\"}[5m])))",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(envoy_cluster_upstream_rq_time_bucket{envoy_cluster_name=~\"httproute/devboard/.*\"}[5m])))",
           "legendFormat": "p99",
           "refId": "C"
         }
@@ -94,15 +149,33 @@
     {
       "type": "row",
       "title": "What the app THINKS happened vs what ACTUALLY happened",
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 }
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      }
     },
     {
       "type": "timeseries",
       "title": "The two counters",
       "description": "The app's own ai_service_requests_total is incremented BEFORE the stream runs (main.py), so it records 200 forever and can never observe a model failure. The span-derived series tells the truth. This panel is left deliberately broken — fixing the counter is the exercise in chapter 12.",
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 10 },
-      "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
       "targets": [
         {
           "expr": "sum by (status) (rate(ai_service_requests_total{namespace=\"$namespace\"}[5m]))",
