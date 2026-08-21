@@ -11,7 +11,7 @@ spec:
   dnsNames:
     - devboard.opswithrahul.com
   issuerRef:
-    name: letsencrypt-production
+    name: letsencrypt-prod
     kind: ClusterIssuer
     group: cert-manager.io
   privateKey:
