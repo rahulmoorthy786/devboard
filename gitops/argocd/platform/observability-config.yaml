@@ -5,6 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "4"
+
 spec:
   project: default
 
@@ -16,6 +17,20 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
+
+  ignoreDifferences:
+    - group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: proxy-telemetry
+      namespace: envoy-gateway-system
+      jsonPointers:
+        - /spec/logging
+        - /spec/telemetry/tracing/provider/backendRefs/0/group
+        - /spec/telemetry/tracing/provider/backendRefs/0/kind
+        - /spec/telemetry/tracing/provider/port
+        - /spec/telemetry/accessLog/settings/0/sinks/0/openTelemetry/backendRefs/0/group
+        - /spec/telemetry/accessLog/settings/0/sinks/0/openTelemetry/backendRefs/0/kind
+        - /spec/telemetry/accessLog/settings/0/sinks/0/openTelemetry/port
 
   syncPolicy:
     automated:
