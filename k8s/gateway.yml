@@ -43,3 +43,20 @@ spec:
           selector:
             matchLabels:
               gateway-access: "true"
+
+    - name: grafana-https
+      protocol: HTTPS
+      port: 443
+      hostname: grafana.opswithrahul.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: devboard-tls
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              gateway-access: "true"
